@@ -8,10 +8,20 @@ namespace Vending_Machine
 {
     public class Products
     {
+
+        Products Banana = new Products();
+        Dictionary Product = [
+            Banana, 5,
+            Apple, 
+            "Men's underwear", 
+            Gerpgork
+            ]
         public Products()
         {
             
         }
             
+
+
     }
 }
