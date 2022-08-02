@@ -5,7 +5,8 @@ namespace Vending_Machine
     { 
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!"); 
+            VM vm = new VM();
+            vm.ShowAll();   
         }
     }
 }
