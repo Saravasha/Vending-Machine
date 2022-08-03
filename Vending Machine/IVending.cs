@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Vending_Machine
 {
-    internal interface IVending
+    interface IVending
     {
 
         public void Purchase()

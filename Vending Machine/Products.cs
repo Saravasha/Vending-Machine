@@ -8,14 +8,6 @@ namespace Vending_Machine
 {
     public abstract class Products
     {
-
-        //Products Banana = new Products();
-        //Dictionary Product = [
-        //    Banana, 5,
-        //    Apple, 
-        //    "Men's underwear", 
-        //    Gerpgork
-        //    ]
         public string ProductName { get; set; }
         public int ProductPrice { get; set; }
         public int ID { get; set; }

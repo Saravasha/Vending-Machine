@@ -6,8 +6,11 @@ namespace Vending_Machine
         static void Main(string[] args)
         {
             VM vm = new VM();
-            vm.ShowAll();
-            vm.SelectAction();
+
+
+            vm.ChooseOption();
+            //vm.SelectAction();
+
         }
     }
 }

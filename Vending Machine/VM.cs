@@ -14,37 +14,8 @@ namespace Vending_Machine
             Products = new List<Products>();
             CreateProductList();
         }
-        public int saldo = 0;
-        private int[] MoneyDenominations = new[]
-       {
-            1,
-            5,
-            10,
-            20,
-            50,
-            100,
-            500,
-            1000
-        };
 
 
-        public int InsertMoney() {
-            var insertValidation = Convert.ToInt32(Console.ReadLine());
-            
-            foreach (var money in MoneyDenominations)
-            
-                if (insertValidation == money) {
-                    saldo += money;
-                    return saldo;
-                }
-                else
-                {
-                    Console.WriteLine($"Oh, you have a {insertValidation} dollar bill do you?");
-                    return saldo;
-                }
-            return saldo;
-        }
-    
         public List<Products> Products;
         public void CreateProductList()
         {
@@ -71,12 +42,116 @@ namespace Vending_Machine
 
         }
 
+        public int saldo = 0;
+        private int[] moneyDenomination = new[]
+       {
+            1,
+            5,
+            10,
+            20,
+            50,
+            100,
+            500,
+            1000
+        };
+
+        // Insert Money
+        public void InsertMoney()
+        {
+            Console.Write("Please insert money (Valid types are:)");
+
+            foreach (var money in moneyDenomination)
+            {
+                Console.Write($"{money}, ");
+            }
+            string insertValidation = Console.ReadLine();
+            int test = Convert.ToInt32(insertValidation);
+
+            //foreach (var money in moneyDenomination)
+
+                if (moneyDenomination.Contains(test))
+                {
+
+                    UpdateSaldo(test);
+                    Console.WriteLine($"{test} is acceptable input, updating saldo");
+                    
+                }
+                else
+                {
+                    Console.WriteLine($"Oh, you have a {insertValidation} dollar bill do you?");
+
+                }
+        }
+
+        public void UpdateSaldo(int moneyDenomination)
+        {
+            saldo += moneyDenomination;
+        }
+
+        // Show All
         public void ShowAll()
         {
             Console.WriteLine("id:\tname:\t\t\t\t\tprice:");
-            foreach(Products p in Products)
+            foreach (Products p in Products)
             {
-                Console.WriteLine($"{p.ID}\t{p.ProductName}\t\t\t\t\t{p.ProductPrice}"); 
+                Console.WriteLine($"{p.ID}\t{p.ProductName}\t\t\t\t\t{p.ProductPrice}");
+            }
+            ChooseOption();
+        }
+
+        // Purchase
+        public void Purchase()
+        {
+
+        }
+
+        // End Transaction
+        public void EndTransaction()
+        {
+            Console.WriteLine($"You get {saldo} kr back in change");
+        } 
+
+        public void DenominationDivider()
+        {
+
+        }
+
+        public void ChooseOption()
+        {
+            bool runMe = true;
+            while (runMe)
+            {
+            Console.WriteLine("Select an action to perform from the menu below:\n" +
+                "1. Insert Money\n" +
+                "2. Purchase\n" +
+                "3. View Products\n" +
+                "4. Good Bye");
+
+            //bool persistMenu = true;
+            string readChoice = Console.ReadLine();
+
+
+                switch (readChoice)
+                {
+                    case "1":
+                        InsertMoney();
+                        break;
+                    case "2":
+                        Purchase();
+                        break;
+                    case "3":
+                        ShowAll();
+                        break;
+                    case "4":
+                        EndTransaction();
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        //persistMenu = false;
+                        runMe = false;
+                        break;
+
+                }
             }
         }
     }
