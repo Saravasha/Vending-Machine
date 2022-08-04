@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Vending_Machine
 {
-    internal class VM : IVending
+    public class VM : IVending
     {
 
         public VM()
@@ -43,7 +43,7 @@ namespace Vending_Machine
         }
 
         public int saldo = 0;
-        private int[] moneyDenomination = new[]
+        public int[] moneyDenomination = new[]
        {
             1,
             5,
@@ -58,22 +58,22 @@ namespace Vending_Machine
         // Insert Money
         public void InsertMoney()
         {
-            Console.Write("Please insert money (Valid types are:)");
+            Console.Write("Vending Machine: Meep morp - Please insert money (Valid types are:)");
 
             foreach (var money in moneyDenomination)
             {
                 Console.Write($"{money}, ");
             }
             string insertValidation = Console.ReadLine();
-            int test = Convert.ToInt32(insertValidation);
+            int validationToInt = Convert.ToInt32(insertValidation);
 
             //foreach (var money in moneyDenomination)
 
-                if (moneyDenomination.Contains(test))
+                if (ValidateMoneyInput(validationToInt))
                 {
 
-                    UpdateSaldo(test);
-                    Console.WriteLine($"{test} is acceptable input, updating saldo");
+                    UpdateSaldo(validationToInt);
+                    Console.WriteLine($"Vending Machine: {validationToInt} kr is acceptable input, updating saldo");
                     
                 }
                 else
@@ -81,6 +81,15 @@ namespace Vending_Machine
                     Console.WriteLine($"Oh, you have a {insertValidation} dollar bill do you?");
 
                 }
+        }
+
+        public bool ValidateMoneyInput(int insertedAmount)
+        {
+            if (moneyDenomination.Contains(insertedAmount))
+                return true;
+            else
+                return false;
+            //saldo += moneyDenomination;
         }
 
         public void UpdateSaldo(int moneyDenomination)
@@ -91,46 +100,105 @@ namespace Vending_Machine
         // Show All
         public void ShowAll()
         {
-            Console.WriteLine("id:\tname:\t\t\t\t\tprice:");
+            Console.WriteLine("id:\tname:\t\t\t\t\tprice:\tdescription:");
             foreach (Products p in Products)
             {
-                Console.WriteLine($"{p.ID}\t{p.ProductName}\t\t\t\t\t{p.ProductPrice}");
+                Console.WriteLine($"{p.ID}\t{p.ProductName}\t\t\t\t\t{p.ProductPrice}\t{p.ToString()}");
             }
-            ChooseOption();
         }
 
         // Purchase
         public void Purchase()
         {
+            ShowAll();
+            Console.Write($"Vending Machine: Saldo is {saldo} kr\nSelect an item to purchase by ID followed by Enter, select Q to go back to the Menu:");
+            string purchaseMenuOption = Console.ReadLine();
+            if (purchaseMenuOption.Contains('Q') || purchaseMenuOption.Contains('q'))
+            {
+                Console.WriteLine("Contains Q");
+                ChooseOption();
+            }
 
+            foreach (Products p in Products)
+            {
+                if (p.ID.Equals(Convert.ToInt32(purchaseMenuOption)))
+                {
+                    //while (saldo > p.ProductPrice )
+                    {
+                        saldo -= p.ProductPrice;
+                        Console.WriteLine($"Vending Machine: {p.ProductName} purchased for {p.ProductPrice} kr!");
+                        //p.Use();
+                        OptionToUseOrExamine(p);
+                    }
+                } 
+            }
         }
 
+        public void OptionToUseOrExamine(Products p)
+        {
+            Console.WriteLine($"User: What do I want to do with this {p.ProductName}\n" +
+                $"1. Use it,\n"+
+                $"2. Examine it,\n"+
+                $"3. Go back to the menu"
+
+                );
+            bool runMe = true;
+            while (runMe)
+            {
+                char k = Console.ReadKey().KeyChar;
+                switch (k)
+                {
+                    case '1':
+                        p.Use();
+                        ChooseOption();
+                        break;
+                    case '2':
+                        p.Examine();
+                        ChooseOption();
+                        break;
+                    case '3':
+                        ChooseOption();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
         // End Transaction
         public void EndTransaction()
         {
-            Console.WriteLine($"You get {saldo} kr back in change");
+            Console.WriteLine($"Vending Machine: You get {saldo} kr back in change divided by:");
+            DenominationDivider();
         } 
 
         public void DenominationDivider()
         {
-
+            for (int i = moneyDenomination.Length - 1; i >= 0; i--)
+            {
+                if (saldo / moneyDenomination[i] >=1) 
+                {
+                    int x = saldo / moneyDenomination[i];
+                    Console.WriteLine($"{x} x {moneyDenomination[i]} kr Denomination");
+                    saldo %= moneyDenomination[i];
+                }
+            }   
         }
 
         public void ChooseOption()
         {
+            Console.WriteLine("Vending Machine: " + "- Hello User, I am Vending Machine");
             bool runMe = true;
             while (runMe)
             {
-            Console.WriteLine("Select an action to perform from the menu below:\n" +
+            Console.WriteLine("Vending Machine: " + "Please select an action to perform from the menu below:\n" +
                 "1. Insert Money\n" +
                 "2. Purchase\n" +
-                "3. View Products\n" +
-                "4. Good Bye");
+                "3. Good Bye");
+                Console.Write("Vending Machine: Directive?:");
 
             //bool persistMenu = true;
             string readChoice = Console.ReadLine();
-
-
+                
                 switch (readChoice)
                 {
                     case "1":
@@ -140,17 +208,12 @@ namespace Vending_Machine
                         Purchase();
                         break;
                     case "3":
-                        ShowAll();
-                        break;
-                    case "4":
                         EndTransaction();
                         Environment.Exit(0);
                         break;
                     default:
-                        //persistMenu = false;
                         runMe = false;
                         break;
-
                 }
             }
         }

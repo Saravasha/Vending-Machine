@@ -15,12 +15,17 @@ namespace Vending_Machine
 
         public new void Examine()
         {
-            Console.WriteLine($"{ProductName} is perishable");
+            //Console.WriteLine($"This {ProductName} is pershiable");
         }
 
-        public new void Use()
+        public override void Use()
         {
-            Console.WriteLine($"This {ProductName} is refreshing");
+            Console.WriteLine($"User: This {ProductName} is soo refreshing!");
+        }
+
+        public override string ToString()
+        {
+            return ProductName + " is refreshing";
         }
     }
 }

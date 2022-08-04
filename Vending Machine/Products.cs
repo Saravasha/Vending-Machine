@@ -15,21 +15,24 @@ namespace Vending_Machine
 
         public Products(string productName, int productPrice)
         {
-            _id++;
-            ID = _id;
+            //_id++;
+            ID = _id++;
             ProductName = productName;
             ProductPrice = productPrice;
         }
             
-        public void Use()
+        public virtual void Examine()
         {
-
+            Console.WriteLine($"This {ProductName} is pershiable");
+        }
+        public virtual void Use()
+        {
+            
         }
 
-        public void Examine()
+        public override string ToString()
         {
-
+            return ProductName + " is pershiable";
         }
-
     }
 }
